@@ -1460,8 +1460,7 @@ sendevent(Client *c, Atom proto)
 
 void
 runAutostart() {
-	system("cd ~/.config/dwm; ./autostart_blocking.sh");
-	system("cd ~/.config/.dwm; ./autostart.sh &");
+	system("cd ~/.config/dwm; ./autostart.sh &");
 }
 
 void
