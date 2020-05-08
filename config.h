@@ -102,7 +102,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },	/* R for Reload, since i have it started in while true loop */
 	{ MODKEY|ShiftMask,				XK_g,	   spawn,		   { .v = browser } },
 };
 
