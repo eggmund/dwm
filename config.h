@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -66,7 +67,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "termite", NULL };
-static const char *browser[] = { "surf", "https://www.startpage.com/", NULL };
+static const char *browsercmd[] = { "firefox" }; /* { "surf", "https://www.startpage.com/", NULL }; */
+	/* Multimedia */
+static const char *play_pausecmd[] = { "playerctl", "play-pause", NULL };
+static const char *previouscmd[] = { "playerctl", "previous", NULL };
+static const char *nextcmd[] = { "playerctl", "next", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -93,6 +98,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ 0,							XF86XK_AudioPlay,	spawn,	{.v = play_pausecmd} },
+	{ 0,							XF86XK_AudioPrev,	spawn,	{.v = previouscmd } },
+	{ 0,							XF86XK_AudioNext,	spawn,	{.v = nextcmd } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -103,7 +112,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },	/* R for Reload, since i have it started in while true loop */
-	{ MODKEY|ShiftMask,				XK_g,	   spawn,		   { .v = browser } },
+	{ MODKEY|ShiftMask,				XK_g,	   spawn,		   { .v = browsercmd } },
 };
 
 /* button definitions */

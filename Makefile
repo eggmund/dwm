@@ -15,7 +15,7 @@ options:
 	@echo "CC       = ${CC}"
 
 .c.o:
-	${CC} -c ${CFLAGS} $<
+	${CC} -c ${CFLAGS} -L~/programming/dwm/bar/target/release/ -llibbar -lbar $<
 
 ${OBJ}: config.h config.mk
 

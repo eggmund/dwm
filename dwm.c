@@ -43,6 +43,7 @@
 
 #include "drw.h"
 #include "util.h"
+// #include "bar.h"
 
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
@@ -2019,11 +2020,13 @@ updatesizehints(Client *c)
 	c->isfixed = (c->maxw && c->maxh && c->maxw == c->minw && c->maxh == c->minh);
 }
 
+
 void
 updatestatus(void)
 {
 	Monitor* m;
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+		//get_text();
 		strcpy(stext, "dwm-"VERSION);
 	for(m = mons; m; m = m->next)
 		drawbar(m);
