@@ -43,7 +43,6 @@
 
 #include "drw.h"
 #include "util.h"
-// #include "bar.h"
 
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
@@ -1844,6 +1843,7 @@ updatebars(void)
 		.event_mask = ButtonPressMask|ExposureMask
 	};
 	XClassHint ch = {"dwm", "dwm"};
+
 	for (m = mons; m; m = m->next) {
 		if (m->barwin)
 			continue;
@@ -2025,9 +2025,25 @@ void
 updatestatus(void)
 {
 	Monitor* m;
-	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
-		//get_text();
+	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext))) {
+		// FILE *fp;	// stdout file for bar process
+		// char bar_text[1035];
+		// //get_text();
+		// fp = popen("/home/josh/programming/dwm/bar/target/release/bar", "r");
+
+		// if (fp == NULL) {
+		// 	printf("Failed to run bar program.\n");
+		// 	exit(1);
+		// }
+
+		// // otherwise read the output from the bar
+		// while (fgets(bar_text, sizeof(bar_text), fp) != NULL) {}
+		// strcpy(stext, bar_text);
+
+		// pclose(fp);
 		strcpy(stext, "dwm-"VERSION);
+	}
+
 	for(m = mons; m; m = m->next)
 		drawbar(m);
 }
