@@ -1,96 +1,76 @@
 mod config;
 mod modules;
 
-use chrono::prelude::*;
-use binance::api::*;
-use binance::market::*;
 use std::thread;
 use std::time::Duration;
 use std::fmt::Display;
 
 use modules::Module;
 
+// Generic type for results that produce generic error.
+pub type GenResult<T> = Result<T, Box<dyn std::error::Error>>;
+
 struct Bar {
     modules: Vec<Box<dyn Module>>,
+    update_counter: usize,
+    base_update_sleep: Duration,
 }
 
 impl Bar {
     pub fn new(modules: Vec<Box<dyn Module>>) -> Self {
         Self {
             modules,
+            update_counter: 0,
+            base_update_sleep: Duration::new(config::BASE_UPDATE_PERIOD as u64, 0),
         }
+    }
+
+    pub async fn update(&mut self) -> GenResult<()> {
+        let mut has_updated = false;    // true if any field has updated
+        let mut bar_string = String::from("|");
+    
+        for module in self.modules.iter_mut() {
+            let module_needed_update = module.update(self.update_counter).await?;
+            bar_string.push_str(&format!(" {} |", module));
+
+            if module_needed_update {
+                has_updated = true;
+            }
+        }
+
+        if has_updated {
+            println!("Bar has updated.");
+            self.update_bar_text(&bar_string);
+        }
+
+        self.update_counter += 1;
+        thread::sleep(self.base_update_sleep);    // Sleep
+
+        self.update_counter += 1;
+
+        Ok(())
+    }
+
+    fn update_bar_text(&self, text: &str) {
+        use std::process::Command;
+        
+        Command::new("xsetroot")
+            .args(&["-name", text])
+            .output()
+            .expect("xsetroot command failed to start.");
     }
 }
 
 
-// #[inline]
-// async fn get_dna_balance(api: &IdenaAPI) -> Result<f64, IdenaError> {
-//     let balance_json = api.balance(config::IDENA_ADDRESS).await?;
-
-//     Ok(
-//         balance_json["balance"].as_str().unwrap().parse::<f64>().unwrap() +
-//         balance_json["stake"].as_str().unwrap().parse::<f64>().unwrap()
-//     )
-// }
-
-#[inline]
-fn get_eth_price(market: &Market) -> Result<f64, Box<dyn std::error::Error>> {
-    Ok(market.get_price("ETHUSDT")?.price)
-}
-
-
-// bar is a program that updates text for dwm status bar
-// e.g:     $ETH: 203.43 | 403 DNA | Sunday 02-01-2020 12:03pm
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    use std::process::Command;
-
-    let base_sleep = Duration::new(config::BASE_UPDATE_PERIOD, 0);
-
-    // let api_key = get_api_key(config::API_KEY_FILE);
-    // let idena_api = IdenaAPI::new(&api_key, config::IDENA_HOST_URL);
-    let binance_client = Market::new(None, None);
-
-    let mut update_counter: u64 = 0;
-
-    let mut datetime: String = String::new();
-    // let mut dna_balance: f64 = 0.0;
-    let mut eth_price: f64 = 0.0;
+async fn main() -> GenResult<()> {
+    // Have modules in order going from left -> right along bar
+    // Place new modules inside Box
+    let mut bar = Bar::new(vec![
+        Box::new( modules::Time::default() ),
+    ]);
 
     loop {
-        let mut has_updated = false;    // true if any field has updated
-
-        // if update_counter % config::IDENA_UPDATE_PERIOD == 0 {
-        //     dna_balance = get_dna_balance(&idena_api).await?;
-        //     println!("Updating idena balance: {}", dna_balance);
-        //     has_updated = true;
-        // }
-
-        if update_counter % config::TIME_UPDATE_PERIOD == 0 {
-            datetime = get_datetime();
-            println!("Updating time: {}", datetime);
-            has_updated = true;
-        }
-
-        if update_counter % config::BINANCE_UPDATE_PERIOD == 0 {
-            eth_price = get_eth_price(&binance_client)?;
-            println!("Updating binance readings: {}", eth_price);
-            has_updated = true;
-        }
-    
-        if has_updated {    // Update bar string
-            println!("Updating bar string.");
-
-            let bar_string = format!("| {:.2} $ETH | {:.2} DNA | {} |", eth_price, dna_balance, datetime);
-            println!("{}", bar_string);
-            
-            Command::new("xsetroot")
-                .args(&["-name", &bar_string])
-                .output()
-                .expect("xsetroot command failed to start.");
-        }
-
-        update_counter += 1;
-        thread::sleep(base_sleep);    // Sleep
+        bar.update().await?;
     }
 }
