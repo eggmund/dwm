@@ -67,7 +67,7 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-/* commands */
+/* --- commands --- */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "termite", NULL };
@@ -75,10 +75,11 @@ static const char *browsercmd[] = { "firefox", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
 static const char *filebrowsercmd[] = { "nautilus", NULL };
-	/* Multimedia */
+/* Multimedia */
 static const char *play_pausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *previouscmd[] = { "playerctl", "previous", NULL };
 static const char *nextcmd[] = { "playerctl", "next", NULL };
+/* Laptop Brightness */
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -113,6 +114,7 @@ static Key keys[] = {
 	{ 0,							XF86XK_AudioPlay,	spawn,	{.v = play_pausecmd} },
 	{ 0,							XF86XK_AudioPrev,	spawn,	{.v = previouscmd } },
 	{ 0,							XF86XK_AudioNext,	spawn,	{.v = nextcmd } },
+	{ 0,							XF86XK_MonBrightnessUp,	spawn,	{.v =  } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

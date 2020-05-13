@@ -5,7 +5,8 @@ use super::Module;
 
 struct IdenaModule {
     api: IdenaAPI,
-    balance_val: f64,
+    balance: f64,
+    output: String,
 }
 
 impl IdenaModule {
@@ -13,7 +14,8 @@ impl IdenaModule {
         let api_key = Self::get_api_key(config::IDENA_HOST_URL);
         Self {
             api: IdenaAPI::new(&api_key, config::IDENA_HOST_URL),
-            balance_val: 0.0,
+            balance: 0.0,
+            output: String::new(),
         }
     }
 
@@ -27,12 +29,26 @@ impl IdenaModule {
         api_file.read_to_string(&mut contents).unwrap();
         contents
     }
+
+    #[inline]
+    async fn get_dna_balance(&self) -> Result<f64, IdenaError> {
+        let balance_json = self.api.balance(config::IDENA_ADDRESS).await?;
+
+        Ok(
+            balance_json["balance"].as_str().unwrap().parse::<f64>().unwrap() +
+            balance_json["stake"].as_str().unwrap().parse::<f64>().unwrap()
+        )
+    }
 }
 
 impl Module for IdenaModule {
-    fn update(&mut self) {
-
+    async fn update(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+        self.balance = self.get_dna_balance()?.await;
+        self.output = self.balance.to_string();
+        Ok(())
     }
 
-    fn get_
+    fn output(&self) -> String {
+        self.output
+    }
 }

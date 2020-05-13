@@ -22,7 +22,6 @@ impl Bar {
     }
 }
 
-
 // #[inline]
 // async fn get_dna_balance(api: &IdenaAPI) -> Result<f64, IdenaError> {
 //     let balance_json = api.balance(config::IDENA_ADDRESS).await?;
