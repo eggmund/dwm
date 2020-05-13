@@ -80,6 +80,8 @@ static const char *play_pausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *previouscmd[] = { "playerctl", "previous", NULL };
 static const char *nextcmd[] = { "playerctl", "next", NULL };
 /* Laptop Brightness */
+static const char *brightness_upcmd[] = { "light", "-A", "5", NULL };
+static const char *brightness_downcmd[] = { "light", "-U", "5", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -114,7 +116,8 @@ static Key keys[] = {
 	{ 0,							XF86XK_AudioPlay,	spawn,	{.v = play_pausecmd} },
 	{ 0,							XF86XK_AudioPrev,	spawn,	{.v = previouscmd } },
 	{ 0,							XF86XK_AudioNext,	spawn,	{.v = nextcmd } },
-	{ 0,							XF86XK_MonBrightnessUp,	spawn,	{.v =  } },
+	{ 0,							XF86XK_MonBrightnessUp,	spawn,	{.v = brightness_upcmd } },
+	{ 0,							XF86XK_MonBrightnessDown,	spawn,	{.v = brightness_downcmd } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
