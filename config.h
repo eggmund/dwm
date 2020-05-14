@@ -38,9 +38,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      instance    title       tags mask     isfloating  ispermanent  monitor */
+	{ "Gimp",     NULL,       NULL,       0,            True,       False,       -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       False,      False,       -1 },
+	{ "status_bar",  NULL,       NULL,       0,       False,      True,       -1 },
 };
 
 /* layout(s) */
@@ -109,6 +110,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },	/* R for Reload, since i have it started in while true loop */
 	{ MODKEY,						XK_g,	   spawn,		   {.v = browsercmd } },
 	{ MODKEY,						XK_c,	   spawn,		   {.v = filebrowsercmd } },
+	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ SUPER,						XK_w,	   spawn,		   {.v = flameshotcmd } },
 	{ 0,							XF86XK_AudioPlay,	spawn,	{.v = play_pausecmd} },
 	{ 0,							XF86XK_AudioPrev,	spawn,	{.v = previouscmd } },

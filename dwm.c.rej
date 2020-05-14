@@ -1,0 +1,28 @@
+--- dwm.c
++++ dwm.c
+@@ -92,7 +92,7 @@ struct Client {
+ 	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
+ 	int bw, oldbw;
+ 	unsigned int tags;
+-	Bool isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
++	Bool isfixed, ispermanent, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
+ 	Client *next;
+ 	Client *snext;
+ 	Monitor *mon;
+@@ -138,6 +138,7 @@ typedef struct {
+ 	const char *title;
+ 	unsigned int tags;
+ 	Bool isfloating;
++	Bool ispermanent;
+ 	int monitor;
+ } Rule;
+ 
+@@ -990,7 +992,7 @@ keypress(XEvent *e) {
+ 
+ void
+ killclient(const Arg *arg) {
+-	if(!selmon->sel)
++	if(!selmon->sel || selmon->sel->ispermanent)
+ 		return;
+ 	if(!sendevent(selmon->sel, wmatom[WMDelete])) {
+ 		XGrabServer(dpy);
