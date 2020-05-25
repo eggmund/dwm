@@ -45,6 +45,8 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
+#include "fibonacci.c"
+
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
@@ -54,11 +56,14 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+ 	{ "[@]",      spiral },
+ 	{ "[\\]",      dwindle },
 };
 
+
 /* key definitions */
-#define MODKEY Mod1Mask
 #define SUPER Mod4Mask
+#define MODKEY SUPER
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -76,10 +81,12 @@ static const char *browsercmd[] = { "firefox", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
 static const char *filebrowsercmd[] = { "nautilus", NULL };
+static const char *discordcmd[] = { "discord", NULL };
 	/* Multimedia */
 static const char *play_pausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *previouscmd[] = { "playerctl", "previous", NULL };
 static const char *nextcmd[] = { "playerctl", "next", NULL };
+static const char *togglemutecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -97,8 +104,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	// { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[3]} },
+	// { MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -111,10 +120,12 @@ static Key keys[] = {
 	{ MODKEY,						XK_g,	   spawn,		   {.v = browsercmd } },
 	{ MODKEY,						XK_c,	   spawn,		   {.v = filebrowsercmd } },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
+	{ MODKEY|ShiftMask,				XK_d,	   spawn,		   {.v = discordcmd} },
 	{ SUPER,						XK_w,	   spawn,		   {.v = flameshotcmd } },
 	{ 0,							XF86XK_AudioPlay,	spawn,	{.v = play_pausecmd} },
 	{ 0,							XF86XK_AudioPrev,	spawn,	{.v = previouscmd } },
 	{ 0,							XF86XK_AudioNext,	spawn,	{.v = nextcmd } },
+	{ 0,							XK_Pause,	spawn,	{.v = togglemutecmd } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
