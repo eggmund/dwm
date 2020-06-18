@@ -1,6 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
+#include <stdio.h>
 
+static const unsigned int gap = 30;
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -11,22 +13,47 @@ static const char dmenufont[]       = "monospace:size=10";
 /* Bar settings */
 static const char selbgcolor[]      = "#005577";
 static const char selfgcolor[]      = "#eeeeee";
-static const unsigned int gappx     = 20;        /* gap pixel between windows */
-static const int vertpad            = 0;       /* vertical padding of bar */
-static const int sidepad            = 0;       /* horizontal padding of bar */
+static const unsigned int gappx     = gap;        /* gap pixel between windows */
+static const int vertpad            = 10;       /* vertical padding of bar */
+static const int sidepad            = gap;       /* horizontal padding of bar */
+static const int barw = 1920 - gap * 2;
 
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char col_cadet[]        = "#56666B";
-static const char col_russian_green[] = "#629460";
+static const char dmenu_x[] = "30";	// gap
+static const char dmenu_y[] = "10";	// vertpad
+static const char dmenu_w[] = "1860";	// 1920 - gap * 2
 
-static const char *colors[][3]      = {
+// static const char col_gray1[]       = "#222222";
+// static const char col_gray2[]       = "#444444";
+// static const char col_gray3[]       = "#bbbbbb";
+// static const char col_gray4[]       = "#eeeeee";
+// static const char col_cyan[]        = "#005577";
+// static const char col_cadet[]        = "#56666B";
+// static const char col_background[] = "#888f63"; // "#629460"
+
+// gruvbox colours https://github.com/morhetz/gruvbox
+static const char col_gruv_bg0_s[] = "#32302f";
+static const char col_gruv_bg1[] = "#3c3836";
+static const char col_gruv_bg2[] = "#504945";
+static const char col_gruv_bg3[] = "#665c54";
+static const char col_gruv_bg4[] = "#7c6f64";
+static const char col_gruv_green[] = "#b8bb26";
+static const char col_gruv_green2[] = "#98971a";
+static const char col_gruv_red[] = "#fb4934";
+static const char col_gruv_yellow[] = "#fabd2f";
+static const char col_gruv_blue[] = "#83a598";
+static const char col_gruv_blue2[] = "#458588";
+static const char col_gruv_purple[] = "#d3869b";
+static const char col_gruv_aqua[] = "#8ec07c";
+static const char col_gruv_fg1[] = "#ebdbb2";
+static const char col_gruv_fg2[] = "#d5c4a1";
+static const char col_gruv_fg3[] = "#bdae93";
+
+static const char *colors[][3] = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_russian_green,  col_russian_green  },
+	//[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+	//[SchemeSel]  = { col_gray4, col_background,  col_background  },
+	[SchemeNorm] = { col_gruv_fg1, col_gruv_bg0_s, col_gruv_bg1 },
+	[SchemeSel]  = { col_gruv_fg1, col_gruv_blue,  col_gruv_blue },
 };
 
 /* tagging */
@@ -63,7 +90,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define SUPER Mod4Mask
-#define MODKEY SUPER
+#define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -75,9 +102,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+
+static char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gruv_bg0_s, "-nf", col_gruv_fg2, "-sb", col_gruv_blue, "-sf", col_gruv_fg1, "-x", dmenu_x, "-y", dmenu_y, "-w", dmenu_w, NULL };
 static const char *termcmd[]  = { "termite", NULL };
-static const char *browsercmd[] = { "firefox", NULL };
+static const char *browsercmd[] = { "qutebrowser", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
 static const char *filebrowsercmd[] = { "nautilus", NULL };
@@ -116,7 +144,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },	/* R for Reload, since i have it started in while true loop */
+	{ SUPER|ShiftMask,             XK_r,      quit,           {0} },	/* R for Reload, since i have it started in while true loop */
 	{ MODKEY,						XK_g,	   spawn,		   {.v = browsercmd } },
 	{ MODKEY,						XK_c,	   spawn,		   {.v = filebrowsercmd } },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
