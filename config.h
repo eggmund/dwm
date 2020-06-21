@@ -8,19 +8,14 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "Source Code Pro:size=10" };
+static const char dmenufont[]       = "Source Code Pro:size=10";
 /* Bar settings */
 static const char selbgcolor[]      = "#005577";
 static const char selfgcolor[]      = "#eeeeee";
 static const unsigned int gappx     = gap;        /* gap pixel between windows */
 static const int vertpad            = 10;       /* vertical padding of bar */
 static const int sidepad            = gap;       /* horizontal padding of bar */
-static const int barw = 1920 - gap * 2;
-
-static const char dmenu_x[] = "30";	// gap
-static const char dmenu_y[] = "10";	// vertpad
-static const char dmenu_w[] = "1860";	// 1920 - gap * 2
 
 // static const char col_gray1[]       = "#222222";
 // static const char col_gray2[]       = "#444444";
@@ -102,8 +97,11 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char dmenu_x[] = "30";	// gap
+static const char dmenu_y[] = "10";	// vertpad
+static const char dmenu_w[] = "1860";	// 1920 - gap * 2
 
-static char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gruv_bg0_s, "-nf", col_gruv_fg2, "-sb", col_gruv_blue, "-sf", col_gruv_fg1, "-x", dmenu_x, "-y", dmenu_y, "-w", dmenu_w, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gruv_bg0_s, "-nf", col_gruv_fg2, "-sb", col_gruv_blue, "-sf", col_gruv_fg1, "-x", dmenu_x, "-y", dmenu_y, "-w", dmenu_w, NULL };
 static const char *termcmd[]  = { "termite", NULL };
 static const char *browsercmd[] = { "qutebrowser", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
