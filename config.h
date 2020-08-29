@@ -108,11 +108,16 @@ static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
 static const char *filebrowsercmd[] = { "nautilus", NULL };
 static const char *discordcmd[] = { "discord", NULL };
+static const char *discordkillcmd[] = { "/usr/bin/killd", NULL };
 	/* Multimedia */
 static const char *play_pausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *previouscmd[] = { "playerctl", "previous", NULL };
 static const char *nextcmd[] = { "playerctl", "next", NULL };
 static const char *togglemutecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
+static const char *togglemutemaincmd[] = { "amixer", "set", "Master", "toggle", NULL };
+static const char *raisevolumecmd[] = { "amixer", "set", "Master", "5%+", NULL };
+static const char *lowervolumecmd[] = { "amixer", "set", "Master", "5%-", NULL };
+
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -147,11 +152,15 @@ static Key keys[] = {
 	{ MODKEY,						XK_c,	   spawn,		   {.v = filebrowsercmd } },
 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,				XK_d,	   spawn,		   {.v = discordcmd} },
-	{ SUPER,						XK_w,	   spawn,		   {.v = flameshotcmd } },
+	{ SUPER|ShiftMask,				XK_d,	   spawn,		   {.v = discordkillcmd} },
+	{ MODKEY,						XK_w,	   spawn,		   {.v = flameshotcmd } },
 	{ 0,							XF86XK_AudioPlay,	spawn,	{.v = play_pausecmd} },
 	{ 0,							XF86XK_AudioPrev,	spawn,	{.v = previouscmd } },
 	{ 0,							XF86XK_AudioNext,	spawn,	{.v = nextcmd } },
 	{ 0,							XK_Pause,	spawn,	{.v = togglemutecmd } },
+	{ 0,							XF86XK_AudioMute,	spawn,	{.v = togglemutemaincmd } },
+	{ 0,							XF86XK_AudioRaiseVolume,	spawn,	{.v = raisevolumecmd } },
+	{ 0,							XF86XK_AudioLowerVolume,	spawn,	{.v = lowervolumecmd } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
