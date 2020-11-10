@@ -117,7 +117,7 @@ static const char *togglemutecmd[] = { "amixer", "set", "Capture", "toggle", NUL
 static const char *togglemutemaincmd[] = { "amixer", "set", "Master", "toggle", NULL };
 static const char *raisevolumecmd[] = { "amixer", "set", "Master", "5%+", NULL };
 static const char *lowervolumecmd[] = { "amixer", "set", "Master", "5%-", NULL };
-
+static const char *pavucmd[] = {"pavucontrol", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -134,6 +134,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
+	{ MODKEY|ShiftMask,		XK_v,	   spawn,		{.v = pavucmd} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	// { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
