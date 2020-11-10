@@ -106,7 +106,7 @@ static const char *termcmd[]  = { "termite", NULL };
 static const char *browsercmd[] = { "qutebrowser", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
-static const char *filebrowsercmd[] = { "nautilus", NULL };
+static const char *filebrowsercmd[] = { "thunar", NULL };
 static const char *discordcmd[] = { "discord", NULL };
 static const char *discordkillcmd[] = { "/usr/bin/killd", NULL };
 	/* Multimedia */
