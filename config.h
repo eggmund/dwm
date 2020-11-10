@@ -101,7 +101,7 @@ static const char dmenu_x[] = "30";	// gap
 static const char dmenu_y[] = "10";	// vertpad
 static const char dmenu_w[] = "1860";	// 1920 - gap * 2
 
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gruv_bg0_s, "-nf", col_gruv_fg2, "-sb", col_gruv_blue, "-sf", col_gruv_fg1, "-x", dmenu_x, "-y", dmenu_y, "-w", dmenu_w, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gruv_bg0_s, "-nf", col_gruv_fg2, "-sb", col_gruv_blue, "-sf", col_gruv_fg1, NULL };
 static const char *termcmd[]  = { "termite", NULL };
 static const char *browsercmd[] = { "qutebrowser", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
@@ -118,6 +118,9 @@ static const char *togglemutemaincmd[] = { "amixer", "set", "Master", "toggle", 
 static const char *raisevolumecmd[] = { "amixer", "set", "Master", "5%+", NULL };
 static const char *lowervolumecmd[] = { "amixer", "set", "Master", "5%-", NULL };
 static const char *pavucmd[] = {"pavucontrol", NULL};
+	/* Laptop Brightness */
+static const char *brightness_upcmd[] = { "light", "-A", "5", NULL };
+static const char *brightness_downcmd[] = { "light", "-U", "5", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -135,6 +138,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,		XK_v,	   spawn,		{.v = pavucmd} },
+	{ 0,							XF86XK_MonBrightnessUp,	spawn,	{.v = brightness_upcmd } },
+	{ 0,							XF86XK_MonBrightnessDown,	spawn,	{.v = brightness_downcmd } },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	// { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
