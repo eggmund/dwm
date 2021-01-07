@@ -103,7 +103,7 @@ static const char dmenu_w[] = "1860";	// 1920 - gap * 2
 
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gruv_bg0_s, "-nf", col_gruv_fg2, "-sb", col_gruv_blue, "-sf", col_gruv_fg1, NULL };
 static const char *termcmd[]  = { "termite", NULL };
-static const char *browsercmd[] = { "qutebrowser", NULL };
+static const char *browsercmd[] = { "firefox", NULL };
 static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 static const char *sleepcmd[] = { "systemctl", "suspend", NULL };
 static const char *filebrowsercmd[] = { "thunar", NULL };
